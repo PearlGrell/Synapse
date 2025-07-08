@@ -1,4 +1,4 @@
-<div align="center">
+<div align="start">
 
   <h1 align="center">Synapse</h1>
 
