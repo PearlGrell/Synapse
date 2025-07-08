@@ -31,6 +31,8 @@ We live in an era of unprecedented access to information, yet understanding rema
 
 Whether you're a student tackling a new domain, a researcher mapping a field, or a creator planning content, Synapse automates the grueling process of creating a high-level overview. It transforms a single line of intent into a comprehensive, hierarchical blueprint, freeing you to focus on what truly matters: insight and creation.
 
+When done with blueprinting, generate a detailed, well-cited document that serves as a foundation for your project, whether it's an article, book, course, or any other knowledge product.
+
 ---
 
 ## Key Features
