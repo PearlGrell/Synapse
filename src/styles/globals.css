@@ -150,3 +150,60 @@ body {
   background: rgba(30, 30, 30, 0.85);
   border-color: rgba(120, 120, 120, 0.5);
 }
+
+article h1 {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+article h2 {
+  font-size: 1.5rem;
+  margin: 0.75rem 0;
+}
+
+article p {
+  margin: 0.5rem 0;
+}
+
+article a {
+  color: #60a5fa;
+  text-decoration: underline;
+}
+
+article ul, article ol {
+  padding-left: 1.25rem;
+  margin: 0.5rem 0;
+}
+
+article code {
+  background: #2d2d2d;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+article pre {
+  background: #1e1e1e;
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+article blockquote {
+  border-left: 4px solid #555;
+  padding-left: 1rem;
+  color: #bbb;
+  margin: 1rem 0;
+}
+
+article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+article th, article td {
+  border: 1px solid #555;
+  padding: 0.5rem;
+}

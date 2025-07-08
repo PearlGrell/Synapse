@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Button } from "../ui/button";
 import { GripVertical, Loader2, PanelRightCloseIcon, PanelRightOpenIcon } from "lucide-react";
 import { errorMessage } from "@/utils/error-handling";
-import { compileMDX } from "@/utils/mdx-compiler";
+import { marked } from "marked";
 
 interface ContentPanelProps {
     contentResult: AsyncResult<string>;
@@ -57,7 +57,7 @@ export default function ContentPanel({
 
             const interval = setInterval(() => {
                 dotCount = (dotCount + 1) % 4;
-                setLoadingText("Generating content" + ".".repeat(dotCount));
+                setLoadingText("This generally takes ~ 3-8 minutes depending on the complexity of the document. Please be patient" + ".".repeat(dotCount));
             }, 500);
 
             return () => clearInterval(interval);
@@ -145,32 +145,22 @@ interface ContentProps {
 }
 
 function Content({ content }: ContentProps) {
-  const [MarkdownContent, setMarkdownContent] = useState<React.ComponentType | null>(null);
-  const [renderingText, setRenderingText] = useState("");
 
-  useEffect(() => {
-    if (!content) return;
+    const html = marked.parse(content, {
+        gfm: true,
+        breaks: true,
+    });
 
-    setRenderingText("Rendering content");
-    let dotCount = 0;
 
-    const timer = setInterval(() => {
-      dotCount = (dotCount + 1) % 4;
-      setRenderingText("Rendering content" + ".".repeat(dotCount));
-    }, 500);
 
-    return () => clearInterval(timer); 
-  }, [content]);
-
-  return (
-    <div className="bg-white/5 p-4 rounded-lg overflow-auto flex-grow min-h-0">
-      {MarkdownContent ? (
-        <MarkdownContent />
-      ) : (
-        <span className="text-white/50">{renderingText}</span>
-      )}
-    </div>
-  );
+    return (
+        <div className="bg-white/5 p-4 rounded-lg overflow-auto flex-grow min-h-0">
+            <article className="prose prose-invert max-w-none"
+                dangerouslySetInnerHTML={{ __html: html }}>
+        
+            </article>
+        </div>
+    );
 }
 
 function SkeletonContent() {

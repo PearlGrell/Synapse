@@ -77,6 +77,9 @@ ${content}
       if (!text || text.toLowerCase().includes("could not be generated")) {
         throw new Error("Empty or invalid response");
       }
+
+      console.log(`[${label}] Successfully generated content for topic "${topic}"`);
+
       return text;
     } catch (err: any) {
       console.warn(`[${label}] Failed for topic "${topic}":`, err?.message || err);
