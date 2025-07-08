@@ -1,6 +1,6 @@
 <div align="start">
 
-  <h1 align="center">Synapse</h1>
+  <h1 align="start">Synapse</h1>
 
   <p align="center">
     An intelligent engine to distill signal from noise. Transform sprawling topics into structured, actionable knowledge.
