@@ -2,7 +2,7 @@
 
   <h1 align="start">Synapse</h1>
 
-  <p align="center">
+  <p align="start">
     An intelligent engine to distill signal from noise. Transform sprawling topics into structured, actionable knowledge.
     <br />
     <a href="#"><strong>Explore the Live Demo »</strong></a>
@@ -14,7 +14,7 @@
   </p>
 </div>
 
-<div align="center">
+<div align="start">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)](https://nextjs.org/)
