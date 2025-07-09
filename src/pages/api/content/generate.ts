@@ -36,26 +36,65 @@ async function extractContent(url: string): Promise<string> {
 }
 
 async function generateTopicContent(topic: string, content: string): Promise<string> {
+
   const prompt = `
-You are a content synthesizer. Your one and only task is to rewrite a block of text, transforming all source references into inline Markdown hyperlinks embedded in the narrative.
+You are a professional rewriting assistant with deep expertise in academic writing and editorial content. Your task is to rewrite the provided content into a **single clean, logically structured paragraph** using **formal, article-grade English** and **Markdown-formatted inline hyperlinks**.
 
-### EXAMPLE TRANSFORMATION
-Input:
-"...as detailed here: (https://example.com/history-of-gods)"
+--- 
 
-Output:
-"...as detailed in the [history of gods](https://example.com/history-of-gods)..."
+### REWRITING RULES:
 
-### RULES:
-1. **Rewrite** all content into a single clear paragraph.
-2. **Embed links** using natural phrasing. Do not use "Source: (URL)" or raw links.
-3. **Clean URLs:** Never include brackets or whitespace inside links.
-4. **Avoid repetition:** Use each link once unless it refers to a distinct section.
-5. **Maintain logic and flow:** Keep the text concise and readable.
+1. **Markdown Hyperlinks Only**  
+   - Convert all raw URLs, malformed links, and footnote-style references into **Markdown inline hyperlinks** embedded within clean sentence structure.
+   - Example:  
+     ❌ “(https://example.com)” or “[this topic](https://...)”  
+     ✅ “...as seen in the [Wikipedia entry on theism](https://example.com)”
 
-### TEXT TO TRANSFORM:
+2. **NO Redundancy or Noise**  
+   - Do **NOT** include:  
+     - “Content could not be generated” messages  
+     - “as seen in footnote 2”  
+     - Mentions of deleted Reddit posts, usernames, or platform rules/policies (unless directly relevant to the topic)
+
+3. **Single, Cohesive Paragraph**  
+   - Always produce **exactly one full paragraph** with no section dividers, headings, footnotes, or broken sentences.  
+   - Flow must be natural and academic, not robotic or templated.
+
+4. **Link Anchors Must Be Descriptive**  
+   - Use anchor text that **clearly describes the link target** (e.g., “[Christian theology on monotheism](...)”)  
+   - Do NOT use:  
+     - “this article,” “here,” “study guide,” or “resource” as anchor text
+
+5. **Limit and Vary Link Usage**  
+   - Only include each link once.  
+   - Vary phrasing across multiple links.  
+   - Distribute links naturally in the sentence, not always at the start or end.
+
+6. **Fill Gaps with Accurate Context**  
+   - If any source content is missing, incomplete, or returns an error, intelligently infer and generate a relevant academic statement to preserve paragraph coherence.  
+   - Do NOT generate fake citations or insert placeholders like “(link)”.
+
+7. **Avoid Platform or Technical Metadata**  
+   - Do not mention site policies, support pages, user agreements, or CAPTCHA explanations.  
+   - Focus only on the **core topic** (historical, philosophical, religious, etc.).
+
+8. **Correct All Grammar, Capitalization, and Flow**  
+   - Sentence structure must be clean, fluid, and professional.  
+   - No awkward phrasing, broken punctuation, or repeated structures.
+
+9. **No Tags or Metadata**
+    - No tags like \`\`\`markdown, \`\`\`html or any other code blocks.
+    - No metadata, comments, or extraneous information.
+    
+10. **Be Concise and Relevant yet Detailed**
+    - Provide a **detailed yet concise** overview of the topic, ensuring all key points are covered without unnecessary verbosity.
+    - **Maintain a formal, academic tone** throughout the paragraph.
+---
+
+### SOURCE CONTENT:
 ${content}
 `;
+
 
   const modelFallbacks = [
     { name: "gemini-2.0-flash", label: "Primary" },
@@ -72,7 +111,10 @@ ${content}
         }
       });
       const response = await result;
-      const text = response.text!.trim().replace(/\[([^\]]+)\]\s+\(([^)]+)\)/g, '[$1]($2)');
+      const text = response.text!
+        .replace(/---+/g, '')
+        .replace(/\[([^\]]+)\][\s\n\r]*\(([^)]+)\)/g, '[$1]($2)')
+        .replace(/\n{2,}/g, '\n');
 
       if (!text || text.toLowerCase().includes("could not be generated")) {
         throw new Error("Empty or invalid response");
@@ -149,8 +191,6 @@ export default async function handler(req: any, res: any) {
       console.error(`Failed to process topic "${topic}":`, err.message);
       summaryMap.set(topic, `*Content for this topic could not be generated due to an error.*`);
     }
-
-    await delay(4000);
   }
 
   const markdown = buildHierarchicalMarkdown(tree, summaryMap);

@@ -155,9 +155,8 @@ function Content({ content }: ContentProps) {
 
     return (
         <div className="bg-white/5 p-4 rounded-lg overflow-auto flex-grow min-h-0">
-            <article className="prose prose-invert max-w-none"
+            <article className="prose prose-invert max-w-full"
                 dangerouslySetInnerHTML={{ __html: html }}>
-        
             </article>
         </div>
     );

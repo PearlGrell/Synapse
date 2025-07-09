@@ -34,7 +34,7 @@ export default function Home() {
 
         setTimeout(async () => {
             setState(State.SUCCESS);
-            router.push(`/${prompt.trim().replace(/\s+/g, "-").toLowerCase()}`);
+            router.push(`/${prompt.trim().replace(/\s+/g, "-")}`);
         }, 5000);
     };
 
