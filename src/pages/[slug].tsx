@@ -206,7 +206,7 @@ export default function Home() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${blueprintResult.data?.name || "synapse_content"}.pdf`;
+      a.download = `${blueprintResult.data?.name.replaceAll("_ ", ": ") || "synapse_content"}.pdf`;
       a.click();
       URL.revokeObjectURL(url);
       toast.dismiss("exporting-content");

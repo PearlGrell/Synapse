@@ -96,7 +96,7 @@ const FlowEditor: React.FC<FlowEditorProps> = ({
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `${blueprint.name || "blueprint"}.pdf`;
+    link.download = `${blueprint.name.replaceAll("_ ", ": ") || ""} Blueprint.pdf`.trim();
     link.click();
 
     toast.dismiss("exporting-blueprint");

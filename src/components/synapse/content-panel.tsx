@@ -57,7 +57,7 @@ export default function ContentPanel({
 
             const interval = setInterval(() => {
                 dotCount = (dotCount + 1) % 4;
-                setLoadingText("This generally takes ~ 3-8 minutes depending on the complexity of the document. Please be patient" + ".".repeat(dotCount));
+                setLoadingText("This generally takes ~1-3 minutes depending on the complexity of the document. Please be patient" + ".".repeat(dotCount));
             }, 500);
 
             return () => clearInterval(interval);
