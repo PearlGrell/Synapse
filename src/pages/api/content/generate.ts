@@ -1,10 +1,10 @@
 import { BlueprintNode } from "@/types";
 import { extractFromHtml } from "@extractus/article-extractor";
 import { GoogleGenAI } from "@google/genai";
+import pLimit from "p-limit";
 
 const genAI = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY! });
-
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const limit = pLimit(5);
 
 function flatten(node: BlueprintNode, path: string[] = []): string[][] {
   const current = [...path, node.name];
@@ -38,68 +38,73 @@ async function extractContent(url: string): Promise<string> {
 async function generateTopicContent(topic: string, content: string): Promise<string> {
 
   const prompt = `
-You are a professional rewriting assistant with deep expertise in academic writing and editorial content. Your task is to rewrite the provided content into a **single clean, logically structured paragraph** using **formal, article-grade English** and **Markdown-formatted inline hyperlinks**.
+**📘 AI REWRITING PROMPT (Formal, Academic, Hyperlinked):**
 
---- 
+You are an advanced rewriting model trained for academic editing and professional summarization. Your task is to **rewrite the provided text into one cohesive, formally written paragraph** that meets the following criteria:
 
-### REWRITING RULES:
-
-1. **Markdown Hyperlinks Only**  
-   - Convert all raw URLs, malformed links, and footnote-style references into **Markdown inline hyperlinks** embedded within clean sentence structure.
-   - Example:  
-     ❌ “(https://example.com)” or “[this topic](https://...)”  
-     ✅ “...as seen in the [Wikipedia entry on theism](https://example.com)”
-
-2. **NO Redundancy or Noise**  
-   - Do **NOT** include:  
-     - “Content could not be generated” messages  
-     - “as seen in footnote 2”  
-     - Mentions of deleted Reddit posts, usernames, or platform rules/policies (unless directly relevant to the topic)
-
-3. **Single, Cohesive Paragraph**  
-   - Always produce **exactly one full paragraph** with no section dividers, headings, footnotes, or broken sentences.  
-   - Flow must be natural and academic, not robotic or templated.
-
-4. **Link Anchors Must Be Descriptive**  
-   - Use anchor text that **clearly describes the link target** (e.g., “[Christian theology on monotheism](...)”)  
-   - Do NOT use:  
-     - “this article,” “here,” “study guide,” or “resource” as anchor text
-
-5. **Limit and Vary Link Usage**  
-   - Only include each link once.  
-   - Vary phrasing across multiple links.  
-   - Distribute links naturally in the sentence, not always at the start or end.
-
-6. **Fill Gaps with Accurate Context**  
-   - If any source content is missing, incomplete, or returns an error, intelligently infer and generate a relevant academic statement to preserve paragraph coherence.  
-   - Do NOT generate fake citations or insert placeholders like “(link)”.
-
-7. **Avoid Platform or Technical Metadata**  
-   - Do not mention site policies, support pages, user agreements, or CAPTCHA explanations.  
-   - Focus only on the **core topic** (historical, philosophical, religious, etc.).
-
-8. **Correct All Grammar, Capitalization, and Flow**  
-   - Sentence structure must be clean, fluid, and professional.  
-   - No awkward phrasing, broken punctuation, or repeated structures.
-
-9. **No Tags or Metadata**
-    - No tags like \`\`\`markdown, \`\`\`html or any other code blocks.
-    - No metadata, comments, or extraneous information.
-    
-10. **Be Concise and Relevant yet Detailed**
-    - Provide a **detailed yet concise** overview of the topic, ensuring all key points are covered without unnecessary verbosity.
-    - **Maintain a formal, academic tone** throughout the paragraph.
 ---
 
-### SOURCE CONTENT:
+### ✅ REWRITING INSTRUCTIONS:
+
+1. **Use Formal, Academic English**
+
+   * Maintain a polished, professional tone suitable for publication or scholarly discussion.
+
+2. **Markdown Inline Hyperlinks Only**
+
+   * Convert all raw URLs and malformed references into **clean, inline Markdown hyperlinks**.
+   * ✅ Correct: "...as outlined in the [Stanford Encyclopedia of Philosophy entry on John Locke](https://plato.stanford.edu/entries/locke-political/)"
+   * ❌ Avoid: bare URLs, “click here,” or footnote-style references.
+
+3. **Single, Logically Structured Paragraph**
+
+   * Produce **exactly one paragraph**. No bullet points, headings, or multiple sections.
+   * The paragraph should flow naturally and cover all relevant aspects from the original text.
+
+4. **Descriptive Link Anchors**
+
+   * Use anchor text that clearly identifies the link’s content. Avoid vague phrases like “this article” or “source.”
+
+5. **Eliminate Redundancy and Metadata**
+
+   * Do NOT mention:
+
+     * Subreddit names, usernames, deleted posts
+     * Platform rules, moderation, technical issues
+     * AI generation disclaimers
+   * Only preserve **thematic, ideological, historical, or factual** information.
+
+6. **Preserve and Expand on Core Topics**
+
+   * If the original content discusses political ideologies, governance, philosophy, or history, **retain and elaborate** on those subjects with academic clarity.
+
+7. **Fix Any Gaps or Errors**
+
+   * If source information is vague or incomplete, intelligently infer and complete it using accurate, general knowledge.
+   * Do NOT use placeholders or insert fake sources.
+
+8. **Limit Link Use to Once Per Topic**
+
+   * Only include **one hyperlink per unique topic**, using varied phrasing and distributing them evenly throughout the paragraph.
+
+9. **No Tags or Code Blocks**
+
+   * The final output must be plain text—**no markdown fences, no labels, no footnotes, no commentary**.
+
+---
+
+**📝 INPUT:**
 ${content}
+
+**🧠 OUTPUT:**
+Return a single, well-formed academic paragraph, with polished prose and properly embedded descriptive Markdown hyperlinks.
 `;
 
 
   const modelFallbacks = [
-    { name: "gemini-2.0-flash", label: "Primary" },
-    { name: "gemini-2.0-flash-lite", label: "Fallback 1" },
-    { name: "gemini-2.5-flash-lite-preview-06-17", label: "Fallback 2" }
+    { name: "gemini-2.0-flash-lite", label: "FL-2.0" },
+    { name: "gemini-2.0-flash", label: "F-2.0" },
+    { name: "gemini-2.5-flash-lite-preview-06-17", label: "FL-2.5" },
   ];
 
   for (const { name, label } of modelFallbacks) {
@@ -141,7 +146,7 @@ function buildHierarchicalMarkdown(
 ): string {
   const currentPath = [...path, node.name];
   const topicKey = currentPath.join(" > ");
-  let markdown = `${'#'.repeat(level)} ${node.name}\n\n`;
+  let markdown = `${"#".repeat(level)} ${node.name}\n\n`;
 
   if (node.children && node.children.length > 0) {
     for (const child of node.children) {
@@ -151,6 +156,7 @@ function buildHierarchicalMarkdown(
     const summary = summaries.get(topicKey) || `*Content for this topic could not be generated.*`;
     markdown += `${summary}\n\n`;
   }
+
   return markdown;
 }
 
@@ -167,34 +173,38 @@ export default async function handler(req: any, res: any) {
   const flattened = flatten(tree);
   const summaryMap = new Map<string, string>();
 
-  for (const path of flattened) {
-    const topic = path.join(" > ");
-    try {
-      console.log(`Processing: ${topic}`);
-      const links = await serper(topic);
-      if (links.length > 0) {
-        const contents = await Promise.all(links.map(extractContent));
-        const combinedContent = contents
-          .filter(c => c)
-          .map((content, i) => {
-            const cleanUrl = links[i].replace(/[\[\]\s]/g, '');
-            return `${content}\n\n(${cleanUrl})`;
-          })
-          .join("\n\n---\n\n");
+  await Promise.all(
+    flattened.map(path =>
+      limit(async () => {
+        const topic = path.join(" > ");
+        try {
+          console.log(`Processing: ${topic}`);
+          const links = await serper(topic);
+          if (links.length > 0) {
+            const contents = await Promise.all(links.map(extractContent));
+            const combinedContent = contents
+              .filter(c => c)
+              .map((content, i) => {
+                const cleanUrl = links[i].replace(/[\[\]\s]/g, "");
+                return `${content}\n\n(${cleanUrl})`;
+              })
+              .join("\n\n---\n\n");
 
-        if (combinedContent) {
-          const summary = await generateTopicContent(topic, combinedContent);
-          summaryMap.set(topic, summary);
+            if (combinedContent) {
+              const summary = await generateTopicContent(topic, combinedContent);
+              summaryMap.set(topic, summary);
+            }
+          }
+        } catch (err: any) {
+          console.error(`Failed to process topic "${topic}":`, err.message);
+          summaryMap.set(topic, `*Content for this topic could not be generated due to an error.*`);
         }
-      }
-    } catch (err: any) {
-      console.error(`Failed to process topic "${topic}":`, err.message);
-      summaryMap.set(topic, `*Content for this topic could not be generated due to an error.*`);
-    }
-  }
+      })
+    )
+  );
 
   const markdown = buildHierarchicalMarkdown(tree, summaryMap);
 
-  res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+  res.setHeader("Content-Type", "text/markdown; charset=utf-8");
   res.status(200).send(markdown.trim());
 }
