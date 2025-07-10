@@ -55,11 +55,11 @@ Synapse is built with a modern, full-stack TypeScript architecture, leveraging a
 | **UI / UX**       | [**React Flow**](https://reactflow.dev/), [**Tailwind CSS**](https://tailwindcss.com/), [**shadcn/ui**](https://ui.shadcn.com/) | Interactive graph visualization, utility-first styling, and UI components. |
 | **Backend**       | [**Next.js API Routes**](https://nextjs.org/docs/api-routes/introduction)                                     | Serverless functions for all backend logic.                               |
 | **AI & Services** | [**Google Gemini**](https://ai.google.dev/), [**Serper API**](https://serper.dev/)                             | AI model for generation/synthesis and low-latency web search.             |
-| **Data Handling** | [@extractus/article-extractor](https://github.com/extractus/article-extractor), [Puppeteer](https://pptr.dev/) | Web scraping for content synthesis and server-side PDF generation.        |
+| **Data Handling** | [@extractus/article-extractor](https://github.com/extractus/article-extractor), [md-2-pdf](md-2-pdf.onrender.com) | Web scraping for content synthesis and server-side PDF generation.        |
 
 ---
 
-## 🗺️ Roadmap
+## 🗺️ Future Roadmap
 
 Synapse is an actively developed project. The future vision is to evolve from a user-directed tool into a proactive, agentic knowledge partner.
 
