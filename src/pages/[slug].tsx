@@ -187,8 +187,17 @@ export default function Home() {
     }
     setIsExporting(true);
     toast.info("Preparing PDF for download...", {
-      duration: Infinity,
+      duration: 1000,
       id: "exporting-content",
+      style: {
+        width: 'auto',
+        textAlign: 'center'
+      }
+    });
+
+    toast.loading("Exporting PDF...", {
+      id: "exporting-content",
+      duration: Infinity,
       style: {
         width: 'auto',
         textAlign: 'center'
@@ -201,7 +210,7 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ markdown: contentResult.data, fileName: blueprintResult.data?.name || "synapse_content" }),
       });
-
+      toast.dismiss("exporting-content");
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -209,7 +218,6 @@ export default function Home() {
       a.download = `${blueprintResult.data?.name.replaceAll("_ ", ": ") || "synapse_content"}.pdf`;
       a.click();
       URL.revokeObjectURL(url);
-      toast.dismiss("exporting-content");
       toast.success("Content exported successfully!" + a.download, {
         duration: 3000,
         style: {
