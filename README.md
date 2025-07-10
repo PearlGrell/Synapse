@@ -69,13 +69,13 @@ Synapse is an actively developed project. The future vision is to evolve from a 
 
 The next-generation of Synapse will feature an AI agent that can:
 
-* **Autonomously Evolve Blueprints**
+* [ ] **Autonomously Evolve Blueprints**
   Given a high-level goal, the agent will proactively research, propose new nodes, identify missing concepts, and restructure the blueprint for optimal clarity.
 
-* **Self-Correction and Validation**
+* [ ] **Self-Correction and Validation**
   The agent will be able to critique its own output, cross-reference sources, and refine the blueprint based on logical consistency and coverage of the topic.
 
-* **Goal-Oriented Research**
+* [ ] **Goal-Oriented Research**
   Instead of just processing leaf nodes, the agent will understand the user's end goal (e.g., "write a book," "plan a course") and tailor the research and synthesis process accordingly.
 
 ---
