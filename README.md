@@ -63,24 +63,68 @@ Synapse is built with a modern, full-stack TypeScript architecture, leveraging a
 
 Synapse is an actively developed project. The future vision is to evolve from a user-directed tool into a proactive, agentic knowledge partner.
 
+---
+
 ### 🤖 Agentic AI Blueprinting
+
 The next-generation of Synapse will feature an AI agent that can:
-- **Autonomously Evolve Blueprints**: Given a high-level goal, the agent will proactively research, propose new nodes, identify missing concepts, and restructure the blueprint for optimal clarity.
-- **Self-Correction and Validation**: The agent will be able to critique its own output, cross-reference sources, and refine the blueprint based on logical consistency and coverage of the topic.
-- **Goal-Oriented Research**: Instead of just processing leaf nodes, the agent will understand the user's end goal (e.g., "write a book," "plan a course") and tailor the research and synthesis process accordingly.
+
+* **Autonomously Evolve Blueprints**
+  Given a high-level goal, the agent will proactively research, propose new nodes, identify missing concepts, and restructure the blueprint for optimal clarity.
+
+* **Self-Correction and Validation**
+  The agent will be able to critique its own output, cross-reference sources, and refine the blueprint based on logical consistency and coverage of the topic.
+
+* **Goal-Oriented Research**
+  Instead of just processing leaf nodes, the agent will understand the user's end goal (e.g., "write a book," "plan a course") and tailor the research and synthesis process accordingly.
+
+---
+
+### 📥 Import, History & Persistence
+
+Expanding how users interact with and manage their blueprints:
+
+* [ ] **PDF Import**
+  Seamlessly ingest research papers, notes, and other documents into Synapse, auto-generating blueprint nodes from content structure.
+
+* [ ] **History & Version Snapshots**
+  Automatically save historical versions of each blueprint, allowing users to rewind, compare, and branch off at any stage.
+
+* [ ] **Auto-Save & Cloud Sync**
+  Ensure every interaction is persistently stored and available across devices.
+
+---
 
 ### 🔄 Enhanced Export & Interoperability
+
 Move beyond PDF to a suite of standard formats to ensure Synapse fits into any workflow:
-- [ ] **Markdown (`.md`)**: For easy integration with Obsidian, Logseq, and other text-based tools.
-- [ ] **Microsoft Word (`.docx`)**: For traditional document editing and collaboration.
-- [ ] **JSON / XML**: To export the raw blueprint structure for use in other applications.
-- [ ] **PowerPoint (`.pptx`)**: Automatically generate a presentation skeleton from the blueprint structure.
+
+* [ ] **Markdown (`.md`)**
+  For easy integration with Obsidian, Logseq, and other text-based tools.
+
+* [ ] **Microsoft Word (`.docx`)**
+  For traditional document editing and collaboration.
+
+* [ ] **JSON / XML**
+  Export the raw blueprint structure for use in other applications or custom workflows.
+
+* [ ] **PowerPoint (`.pptx`)**
+  Automatically generate a presentation skeleton from the blueprint structure.
+
+---
 
 ### 🔗 Ecosystem Integration & Version Control
+
 Deepen the connection with the tools our users love:
-- [ ] **Native Notion & Obsidian Integration**: Two-way sync capabilities to push and pull blueprint updates directly from your knowledge base.
-- [ ] **Git-Based Versioning**: Option to save blueprints to a GitHub repository, enabling true version control, branching, and collaboration on knowledge structures.
-- [ ] **Real-time Collaboration**: Allow multiple users to view and edit a blueprint simultaneously, with changes reflected live.
+
+* [ ] **Native Notion & Obsidian Integration**
+  Two-way sync to push and pull blueprint updates directly from your knowledge base.
+
+* [ ] **Git-Based Versioning**
+  Save blueprints to a GitHub repository for version control, branching, and collaboration.
+
+* [ ] **Real-Time Collaboration**
+  Allow multiple users to view and edit a blueprint simultaneously, with changes reflected live.
 
 ---
 
