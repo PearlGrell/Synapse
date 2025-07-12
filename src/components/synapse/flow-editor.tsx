@@ -77,7 +77,7 @@ const FlowEditor: React.FC<FlowEditorProps> = ({
       return;
     }
 
-    toast.info("Exporting blueprint as PDF...", {
+    toast.loading("Exporting blueprint as PDF...", {
       id: "exporting-blueprint",
       duration: Infinity,
       style: {

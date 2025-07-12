@@ -186,15 +186,7 @@ export default function Home() {
       return;
     }
     setIsExporting(true);
-    toast.info("Preparing PDF for download...", {
-      duration: 1000,
-      id: "exporting-content",
-      style: {
-        width: 'auto',
-        textAlign: 'center'
-      }
-    });
-
+    
     toast.loading("Exporting PDF...", {
       id: "exporting-content",
       duration: Infinity,
