@@ -5,12 +5,10 @@
   <p align="start">
     An intelligent engine to distill signal from noise. Transform sprawling topics into structured, actionable knowledge.
     <br />
-    <a href="#"><strong>Explore the Live Demo »</strong></a>
+    <a href="synapse-gen.vercel.app"><strong>Explore the Live Demo »</strong></a>
     <br />
     <br />
     <a href="https://github.com/PearlGrell/synapse/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/PearlGrell/synapse/issues">Request Feature</a>
   </p>
 </div>
 
