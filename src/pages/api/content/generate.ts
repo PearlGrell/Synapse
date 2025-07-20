@@ -4,7 +4,7 @@ import { GoogleGenAI } from "@google/genai";
 import pLimit from "p-limit";
 
 const genAI = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY! });
-const limit = pLimit(4);
+const limit = pLimit(5);
 
 function collectAllNodes(
   node: BlueprintNode,
